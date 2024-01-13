@@ -27,5 +27,4 @@
 
 #### **效果图**：
 
-![业务票据1.jpg](1705117413img
-/556/业务票据.jpg)
+![业务票据1.jpg](https://github.com/kokotao/addMaskOverQR/blob/main/1705117413img/556/%E4%B8%9A%E5%8A%A1%E7%A5%A8%E6%8D%AE1.jpg)
