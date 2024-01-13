@@ -7,6 +7,9 @@ import tkinter as tk
 from tkinter import filedialog
 from pyzbar.pyzbar import decode
 import qrcode
+import time
+
+timestamp = str(int(time.time()))
 
 
 def detect_and_mask_qr_code(image_path, zip_file_name, icon_path):
@@ -28,7 +31,7 @@ def detect_and_mask_qr_code(image_path, zip_file_name, icon_path):
     if relative_path.startswith('\\'):
         relative_path = relative_path[1:]
 
-    relative_path = "img/" + os.path.normpath(relative_path)
+    relative_path = timestamp + "img/" + os.path.normpath(relative_path)
     # 获取当前脚本所在的目录
     current_dir = os.path.dirname(os.path.abspath(__file__))
 
@@ -45,11 +48,27 @@ def detect_and_mask_qr_code(image_path, zip_file_name, icon_path):
     if image is None:
         print("Error: Unable to read the image.")
         return
+    # 亮度和对比度调整
+    alpha = 1.8  # 对比度因子
+    beta = -35  # 亮度因子
+    adjusted_image = cv2.convertScaleAbs(image, alpha=alpha, beta=beta)
+    # cv2.imshow('Adjusted Image', adjusted_image)
+    # cv2.waitKey(0)
+    # cv2.destroyAllWindows()
     # 转换为灰度图像
-    gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-
+    gray = cv2.cvtColor(adjusted_image, cv2.COLOR_BGR2GRAY)
+    # cv2.imshow('Grayscale Image', gray)
+    # cv2.waitKey(0)
+    # 双边滤波
+    filter_image = cv2.bilateralFilter(gray, 13, 26, 6)
+    # cv2.imshow('Filtered Image', filter_image)
+    # cv2.waitKey(0)
+    # 反二值化
+    _, binary_image = cv2.threshold(filter_image, 210, 255, cv2.THRESH_BINARY_INV)
+    # cv2.imshow('Binary Image', binary_image)
+    # cv2.waitKey(0)
     # 使用 pyzbar 进行二维码检测
-    decoded_objects = decode(gray)
+    decoded_objects = decode(filter_image)
     # 如果检测到二维码
     if decoded_objects:
         # 取第一个二维码的位置坐标
