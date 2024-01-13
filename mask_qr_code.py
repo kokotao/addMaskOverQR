@@ -1,5 +1,4 @@
 import cv2
-from pyzbar.pyzbar import decode
 import numpy as np
 import os
 import zipfile
@@ -121,10 +120,8 @@ def detect_and_mask_qr_code(image_path, zip_file_name, icon_path):
 
 
 def process_zip(zip_file_path, icon_path):
-    # 创建输出目录
-    output_directory = "D:\\workspace\\selfCoding\\pythonProject\\before"
     tempDir = "D:\\temp"
-    os.makedirs(output_directory, exist_ok=True)
+    # os.makedirs(output_directory, exist_ok=True)
     # 提取压缩包的文件名（包括扩展名）
     zip_file_name = os.path.basename(zip_file_path)
     # 分离文件名和扩展名
